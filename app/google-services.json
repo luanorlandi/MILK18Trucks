@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "353011114636",
+    "firebase_url": "https://milk18trucks.firebaseio.com",
+    "project_id": "milk18trucks",
+    "storage_bucket": "milk18trucks.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:353011114636:android:6381d5715433c78f",
+        "android_client_info": {
+          "package_name": "com.gdtac.milk18trucks"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "353011114636-ukavn4s53ssvnrmqcmm0immchs6o49u1.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gdtac.milk18trucks",
+            "certificate_hash": "30908486D9266E3CDEA465C36E3529C6E1DB9674"
+          }
+        },
+        {
+          "client_id": "353011114636-bgvusga7sdtqm61hgnq1ckvjfjrlo90m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.gdtac.milk18trucks",
+            "certificate_hash": "D9C1FBA9422284814CB0E3560C60EDFEEE002D60"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyASpychRzKvmy2-s5Xur3fvegv8fgH69XE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
