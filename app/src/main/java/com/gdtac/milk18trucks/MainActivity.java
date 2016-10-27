@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(this, SignActivity.class));
         }
 
-        System.err.println("aqui7");
         // Name, email address, and profile photo Url
         String name = user.getDisplayName();
         String email = user.getEmail();
