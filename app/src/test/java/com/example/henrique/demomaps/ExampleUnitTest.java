@@ -1,4 +1,4 @@
-package com.gdtac.milk18trucks;
+package com.example.henrique.demomaps;
 
 import org.junit.Test;
 

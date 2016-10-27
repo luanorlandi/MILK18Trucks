@@ -1,4 +1,4 @@
-package com.gdtac.milk18trucks;
+package com.example.henrique.demomaps;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.gdtac.milk18trucks", appContext.getPackageName());
+        assertEquals("com.example.henrique.demomaps", appContext.getPackageName());
     }
 }
