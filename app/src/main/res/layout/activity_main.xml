@@ -40,5 +40,31 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/signOut" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:text="Coordenada X"
+            android:ems="10"
+            android:id="@+id/coordX"
+            android:hint="coordenada x"
+            android:singleLine="false" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:ems="10"
+            android:id="@+id/coordY"
+            android:hint="coordenada y"
+            android:text="Coordenada Y" />
+
+        <Button
+            android:text="Atualizar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/buttonUpdate" />
+
     </LinearLayout>
 </RelativeLayout>

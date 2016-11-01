@@ -6,10 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -18,7 +21,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView userUid;
     private Button signOutButton;
 
-    FirebaseAuth mAuth;
+    private EditText coordX;
+    private EditText coordY;
+    private Button buttonUpdate;
+
+    private FirebaseAuth mAuth;
+
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +39,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         userUid = (TextView) findViewById(R.id.userUidText);
         signOutButton = (Button) findViewById(R.id.signOut);
 
+        coordX = (EditText) findViewById(R.id.coordX);
+        coordY = (EditText) findViewById(R.id.coordY);
+        buttonUpdate = (Button) findViewById(R.id.buttonUpdate);
+
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser user = mAuth.getCurrentUser();
 
@@ -37,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             finish();
             startActivity(new Intent(this, SignActivity.class));
         }
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         // Name, email address, and profile photo Url
         String name = user.getDisplayName();
@@ -53,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         userUid.setText("ID: " + uid);
 
         signOutButton.setOnClickListener(this);
+        buttonUpdate.setOnClickListener(this);
     }
 
     @Override
@@ -61,6 +77,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             mAuth.signOut();
             finish();
             startActivity(new Intent(MainActivity.this, SignActivity.class));
+        } else if(v == buttonUpdate) {
+            updateCoord();
         }
+    }
+
+    private void updateCoord() {
+        float x = Float.parseFloat(coordX.getText().toString());
+        float y = Float.parseFloat(coordY.getText().toString());
+
+        CoordenateInformation ci = new CoordenateInformation(x, y);
+
+        FirebaseUser user = mAuth.getCurrentUser();
+        databaseReference.child(user.getUid()).setValue(ci);
     }
 }
