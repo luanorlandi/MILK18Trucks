@@ -6,49 +6,27 @@ package com.gdtac.milk18trucks;
 
 public class CoordenateInformation {
 
-    private float coordX;
-    private float coordY;
+    private double latitude;
+    private double longitude;
 
-    private TestClass test;
-    private TestClass test2;
-
-    CoordenateInformation(float x, float y) {
-        this.coordX = x;
-        this.coordY = y;
-
-        this.test = new TestClass("Luan", 22);
-        this.test2 = new TestClass("Bruno", 23);
+    CoordenateInformation(double longitude, double latitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
     }
 
-    public float getCoordX() {
-        return coordX;
+    public double getLatitude() {
+        return latitude;
     }
 
-    public void setCoordX(float coordX) {
-        this.coordX = coordX;
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
-    public float getCoordY() {
-        return coordY;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setCoordY(float coordY) {
-        this.coordY = coordY;
-    }
-
-    public TestClass getTest() {
-        return test;
-    }
-
-    public void setTest(TestClass test) {
-        this.test = test;
-    }
-
-    public TestClass getTest2() {
-        return test2;
-    }
-
-    public void setTest2(TestClass test2) {
-        this.test2 = test2;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

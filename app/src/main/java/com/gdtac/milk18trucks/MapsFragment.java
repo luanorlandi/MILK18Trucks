@@ -1,16 +1,7 @@
 package com.gdtac.milk18trucks;
 
-
-import android.content.Context;
-import android.location.Criteria;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,7 +20,8 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
 
     private GoogleMap mMap;
 
-    private LocationManager locationManager;
+    private final static long locationUpdateTime = 1500;
+    private final static float minDistUpdateTime = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,14 +43,6 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
     public void onMapReady(GoogleMap googleMap) {
 
         try {
-            locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-
-            Criteria criteria = new Criteria();
-
-            String provider =  locationManager.getBestProvider(criteria, true);
-
-            Toast.makeText(getActivity(), "Provider: " + provider, Toast.LENGTH_LONG).show();
-
             mMap = googleMap;
             mMap.setOnMapClickListener(this);
             mMap.getUiSettings().setZoomControlsEnabled(true);

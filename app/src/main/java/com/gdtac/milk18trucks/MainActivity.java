@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity
 
     private FirebaseAuth mAuth;
     private FirebaseUser user;
-    private DatabaseReference databaseReference;
+    private DatabaseReference rootRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity
             callSignActivity();
         }
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        rootRef = FirebaseDatabase.getInstance().getReference();
 
         /* Navigator setup */
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -76,6 +76,13 @@ public class MainActivity extends AppCompatActivity
         /* Fragment setup */
         fragmentManager = getSupportFragmentManager();
         showFragment(new MapsFragment(), "MapsFragment");
+
+        /* GPS tracker */
+        GPSTracker gpsTracker = new GPSTracker(this);
+
+        /* start thread to update user location */
+        User userThread = new User(rootRef, user, gpsTracker);
+        new Thread(userThread).start();
     }
 
     @Override
@@ -161,34 +168,4 @@ public class MainActivity extends AppCompatActivity
 
         textViewEmail.setText(email);
     }
-
-
-
-
-
-
-
-
-
-//    @Override
-//    public void onClick(View v) {
-//        if(v == signOutButton) {
-//            mAuth.signOut();
-//            finish();
-//            startActivity(new Intent(MainActivityOld.this, SignActivity.class));
-//        } else if(v == buttonUpdate) {
-//            updateCoord();
-//        }
-//    }
-//
-//    private void updateCoord() {
-//        float x = Float.parseFloat(coordX.getText().toString());
-//        float y = Float.parseFloat(coordY.getText().toString());
-//
-//        CoordenateInformation ci = new CoordenateInformation(x, y);
-//
-//        FirebaseUser user = mAuth.getCurrentUser();
-//        databaseReference.child(user.getUid()).setValue(ci);
-//    }
-//
 }
