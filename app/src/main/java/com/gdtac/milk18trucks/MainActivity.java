@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity
     private FirebaseUser user;
     private DatabaseReference rootRef;
 
+    private User userThread;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity
         GPSTracker gpsTracker = new GPSTracker(this);
 
         /* start thread to update user location */
-        User userThread = new User(rootRef, user, gpsTracker);
+        userThread = new User(rootRef, user, gpsTracker);
         new Thread(userThread).start();
     }
 
@@ -123,18 +125,24 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch(id) {
+            case R.id.nav_camera:
+                break;
+            case R.id.nav_gallery:
+                break;
+            case R.id.nav_slideshow:
+                break;
+            case R.id.nav_manage:
+                break;
+            case R.id.nav_share:
+                break;
+            case R.id.nav_send:
+                break;
+            case R.id.nav_signout:
+                userThread.setEnabled(false);
+                mAuth.signOut();
+                callSignActivity();
+                break;
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

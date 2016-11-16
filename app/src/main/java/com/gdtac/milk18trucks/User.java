@@ -11,6 +11,8 @@ import com.google.firebase.database.DatabaseReference;
 
 public class User implements Runnable {
 
+    private boolean enabled;
+
     private DatabaseReference ref;
     private FirebaseUser user;
     private GPSTracker gpsTracker;
@@ -23,11 +25,13 @@ public class User implements Runnable {
         this.gpsTracker = gpsTracker;
 
         coord = new CoordenateInformation(0, 0);
+
+        enabled = true;
     }
 
     @Override
     public void run() {
-        while(true) {
+        while(enabled) {
             Location location = gpsTracker.getLocation();
 
             if(location != null) {
@@ -43,5 +47,13 @@ public class User implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 }
