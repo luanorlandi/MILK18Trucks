@@ -1,4 +1,4 @@
-package com.gdtac.milk18trucks;
+package database;
 
 /**
  * Created by Orlandi on 31-Oct-16.
@@ -9,7 +9,7 @@ public class CoordenateInformation {
     private double latitude;
     private double longitude;
 
-    CoordenateInformation(double longitude, double latitude) {
+    public CoordenateInformation(double longitude, double latitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }

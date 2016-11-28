@@ -5,6 +5,8 @@ import android.location.Location;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
+import database.CoordenateInformation;
+
 /**
  * Created by Orlandi on 13/11/2016.
  */
