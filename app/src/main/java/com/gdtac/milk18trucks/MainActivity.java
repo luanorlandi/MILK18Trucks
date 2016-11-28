@@ -34,7 +34,8 @@ public class MainActivity extends AppCompatActivity
     private FirebaseUser user;
     private DatabaseReference rootRef;
 
-    private User userThread;
+    private static GPSTracker gpsTracker;
+    private static User userThread = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,10 +81,10 @@ public class MainActivity extends AppCompatActivity
         showFragment(new MapsFragment(), "MapsFragment");
 
         /* GPS tracker */
-        GPSTracker gpsTracker = new GPSTracker(this);
+        gpsTracker = new GPSTracker(this);
 
         /* start thread to update user location */
-        userThread = new User(rootRef, user, gpsTracker);
+        userThread = new User(rootRef.child("User"), user, gpsTracker);
         new Thread(userThread).start();
     }
 
@@ -151,6 +152,10 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void callSignActivity() {
+        if(userThread != null) {
+            userThread.setEnabled(false);
+        }
+
         finish();
         startActivity(new Intent(this, SignActivity.class));
     }

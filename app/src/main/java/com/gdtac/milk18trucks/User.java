@@ -19,6 +19,8 @@ public class User implements Runnable {
 
     private CoordenateInformation coord;
 
+    private static final int MIN_TIME_UPDATE = 5000;
+
     public User(DatabaseReference ref, FirebaseUser user, GPSTracker gpsTracker) {
         this.ref = ref;
         this.user = user;
@@ -34,7 +36,7 @@ public class User implements Runnable {
         while(enabled) {
             Location location = gpsTracker.getLocation();
 
-            if(location != null) {
+            if (location != null) {
                 coord.setLongitude(location.getLongitude());
                 coord.setLatitude(location.getLatitude());
 
@@ -42,7 +44,7 @@ public class User implements Runnable {
             }
 
             try {
-                Thread.sleep(1500);
+                Thread.sleep(MIN_TIME_UPDATE);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

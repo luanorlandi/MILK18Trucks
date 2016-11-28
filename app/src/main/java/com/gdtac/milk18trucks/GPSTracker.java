@@ -26,7 +26,7 @@ public class GPSTracker extends Service implements LocationListener {
     private boolean canGetLocation;
 
     private static final long MIN_DIST_UPDATE = 0;
-    private static final long MIN_TIME_UPDATE = 0;
+    private static final long MIN_TIME_UPDATE = 5000;
 
     protected LocationManager locationManager;
 
@@ -135,11 +135,12 @@ public class GPSTracker extends Service implements LocationListener {
 
     @Override
     public void onProviderEnabled(String provider) {
-
+        initGPS();
     }
 
     @Override
     public void onProviderDisabled(String provider) {
+        stopGPS();
         showSettingsAlert();
     }
 
