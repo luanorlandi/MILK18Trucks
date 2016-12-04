@@ -25,6 +25,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import database.DatabaseRoot;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -35,7 +37,9 @@ public class MainActivity extends AppCompatActivity
     private DatabaseReference rootRef;
 
     private static GPSTracker gpsTracker;
-    private static User userThread = null;
+    private static MyUser myUser = null;
+
+    private static DatabaseRoot databaseRoot;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,8 +88,11 @@ public class MainActivity extends AppCompatActivity
         gpsTracker = new GPSTracker(this);
 
         /* start thread to update user location */
-        userThread = new User(rootRef.child("User"), user, gpsTracker);
-        new Thread(userThread).start();
+        myUser = new MyUser(rootRef.child("User"), user, gpsTracker);
+        new Thread(myUser).start();
+
+        /* database root */
+        databaseRoot = new DatabaseRoot();
     }
 
     @Override
@@ -140,7 +147,7 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_send:
                 break;
             case R.id.nav_signout:
-                userThread.setEnabled(false);
+                myUser.setEnabled(false);
                 mAuth.signOut();
                 callSignActivity();
                 break;
@@ -152,8 +159,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void callSignActivity() {
-        if(userThread != null) {
-            userThread.setEnabled(false);
+        if(myUser != null) {
+            myUser.setEnabled(false);
         }
 
         finish();

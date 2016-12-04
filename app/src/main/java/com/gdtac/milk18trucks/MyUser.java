@@ -5,30 +5,31 @@ import android.location.Location;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 
-import database.CoordenateInformation;
+import database.Coordinate;
+import database.User;
 
 /**
  * Created by Orlandi on 13/11/2016.
  */
 
-public class User implements Runnable {
+public class MyUser implements Runnable {
 
     private boolean enabled;
 
     private DatabaseReference ref;
-    private FirebaseUser user;
+    private FirebaseUser firebaseUser;
     private GPSTracker gpsTracker;
 
-    private CoordenateInformation coord;
+    private User user;
 
     private static final int MIN_TIME_UPDATE = 5000;
 
-    public User(DatabaseReference ref, FirebaseUser user, GPSTracker gpsTracker) {
+    public MyUser(DatabaseReference ref, FirebaseUser firebaseUser, GPSTracker gpsTracker) {
         this.ref = ref;
-        this.user = user;
+        this.firebaseUser = firebaseUser;
         this.gpsTracker = gpsTracker;
 
-        coord = new CoordenateInformation(0, 0);
+        user = new User();
 
         enabled = true;
     }
@@ -39,10 +40,10 @@ public class User implements Runnable {
             Location location = gpsTracker.getLocation();
 
             if (location != null) {
-                coord.setLongitude(location.getLongitude());
-                coord.setLatitude(location.getLatitude());
+                user.getCoordinate().setLongitude(location.getLongitude());
+                user.getCoordinate().setLatitude(location.getLatitude());
 
-                ref.child(user.getUid()).setValue(coord);
+                ref.child(firebaseUser.getUid()).setValue(user);
             }
 
             try {

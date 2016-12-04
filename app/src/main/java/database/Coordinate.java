@@ -4,12 +4,16 @@ package database;
  * Created by Orlandi on 31-Oct-16.
  */
 
-public class CoordenateInformation {
+public class Coordinate {
 
     private double latitude;
     private double longitude;
 
-    public CoordenateInformation(double longitude, double latitude) {
+    public Coordinate() {
+
+    }
+
+    public Coordinate(double longitude, double latitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
