@@ -36,10 +36,13 @@ public class MainActivity extends AppCompatActivity
     private FirebaseUser user;
     private DatabaseReference rootRef;
 
-    private static GPSTracker gpsTracker;
-    private static MyUser myUser = null;
+    private MapsFragment mapsFragment;
 
-    private static DatabaseRoot databaseRoot;
+    private GPSTracker gpsTracker;
+    private MyUser myUser = null;
+
+    private DatabaseRoot databaseRoot;
+    private MarkerHandler markerHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +85,8 @@ public class MainActivity extends AppCompatActivity
 
         /* Fragment setup */
         fragmentManager = getSupportFragmentManager();
-        showFragment(new MapsFragment(), "MapsFragment");
+        mapsFragment = new MapsFragment();
+        showFragment(mapsFragment, "MapsFragment");
 
         /* GPS tracker */
         gpsTracker = new GPSTracker(this);
@@ -93,6 +97,25 @@ public class MainActivity extends AppCompatActivity
 
         /* database root */
         databaseRoot = new DatabaseRoot();
+
+        /* marker handler */
+        markerHandler = new MarkerHandler(databaseRoot, mapsFragment);
+        new Thread(markerHandler).start();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        gpsTracker.stopGPS();
+
+        myUser.setEnabled(false);
+
+        databaseRoot.stopFarmListener();
+        databaseRoot.stopIndustryListener();
+        databaseRoot.stopUserListener();
+
+        markerHandler.setEnabled(false);
     }
 
     @Override
