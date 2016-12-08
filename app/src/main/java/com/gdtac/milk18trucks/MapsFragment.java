@@ -8,6 +8,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -16,7 +17,9 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.util.HashMap;
 import java.util.Map;
 
+import database.DatabaseRoot;
 import database.Farm;
+import database.Industry;
 import database.User;
 
 import static java.security.AccessController.getContext;
@@ -35,6 +38,15 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
     private final static long locationUpdateTime = 1500;
     private final static float minDistUpdateTime = 0;
 
+    private DatabaseRoot databaseRoot;
+    private boolean markerUpdate;
+
+    private static final int MIN_TIME_UPDATE = 5000;
+
+    private BitmapDescriptor farmMarkerIcon;
+    private BitmapDescriptor industryMarkerIcon;
+    private BitmapDescriptor userMarkerIcon;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,8 +57,23 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
         userMarker = new HashMap<>();
 
         googleMap = null;
+
+        /* must be set with function setDatabaseRoot() after create */
+        databaseRoot = null;
+        markerUpdate = true;
+
+        /* set marker icons */
+        farmMarkerIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_cow);
+        industryMarkerIcon = BitmapDescriptorFactory.fromResource(R.drawable.ic_industry);
+        userMarkerIcon = BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+        markerUpdate = false;
+    }
 
     /**
      * Manipulates the map once available.
@@ -68,25 +95,6 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
         } catch(SecurityException ex) {
             Log.e(TAG, "Error", ex);
         }
-
-        new Runnable() {
-            @Override
-            public void run() {
-                LatLng school = new LatLng(-22.004097, -47.855757);
-                MarkerOptions marker = new MarkerOptions();
-                marker.position(school);
-                marker.title("School");
-                marker.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
-
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Marker m = googleMap.addMarker(marker);
-                        googleMap.moveCamera(CameraUpdateFactory.newLatLng(school));
-                    }
-                }
-            }
-        };
     }
 
     @Override
@@ -94,35 +102,217 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
         Toast.makeText(getContext(), "Coord: " + latLng.toString(), Toast.LENGTH_SHORT).show();
     }
 
-    public void updateUserMarker(String key, User user) {
-        if(googleMap == null) {
-            /* map not ready */
-            return;
-        }
+    public void updateFarmMarker(final String key, final Farm farm) {
 
-        if(user == null) {
-            System.err.println("Maps fragment ignored a null user");
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(googleMap == null) {
+                    /* map not ready */
+                    return;
+                }
 
-            return;
-        }
+                if(farm == null) {
+                    System.err.println("Maps fragment ignored a null farm");
 
-        if(userMarker.containsKey(key)) {
-            Marker marker = userMarker.get(key);
+                    return;
+                }
 
-            marker.setPosition(new LatLng(
-                    user.getCoordinate().getLatitude(),
-                    user.getCoordinate().getLongitude()));
-        } else {
-            MarkerOptions markerOptions = new MarkerOptions();
-            markerOptions.position(new LatLng(
-                    user.getCoordinate().getLatitude(),
-                    user.getCoordinate().getLongitude()));
-            markerOptions.title("User");
-            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.mipmap.ic_launcher));
+                if(farmMarker.containsKey(key)) {
+                    Marker marker = farmMarker.get(key);
 
-            /* create the marker and add to map */
-            //Marker marker = googleMap.addMarker(markerOptions);
-            //userMarker.put(key, marker);
-        }
+                    marker.setPosition(new LatLng(
+                            farm.getCoordinate().getLatitude(),
+                            farm.getCoordinate().getLongitude()));
+                    marker.setTitle(farm.getName());
+                    marker.setSnippet(farm.getDescription());
+                } else {
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(new LatLng(
+                            farm.getCoordinate().getLatitude(),
+                            farm.getCoordinate().getLongitude()));
+                    markerOptions.title(farm.getName());
+                    markerOptions.snippet(farm.getDescription());
+                    markerOptions.icon(farmMarkerIcon);
+
+                    /* create the marker and add to map */
+                    Marker marker = googleMap.addMarker(markerOptions);
+                    farmMarker.put(key, marker);
+                }
+            }
+        });
+    }
+
+    public void updateIndustryMarker(final String key, final Industry industry) {
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(googleMap == null) {
+                    /* map not ready */
+                    return;
+                }
+
+                if(industry == null) {
+                    System.err.println("Maps fragment ignored a null industry");
+
+                    return;
+                }
+
+                if(industryMarker.containsKey(key)) {
+                    Marker marker = industryMarker.get(key);
+
+                    marker.setPosition(new LatLng(
+                            industry.getCoordinate().getLatitude(),
+                            industry.getCoordinate().getLongitude()));
+                    marker.setTitle(industry.getName());
+                    marker.setSnippet(industry.getDescription());
+                } else {
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(new LatLng(
+                            industry.getCoordinate().getLatitude(),
+                            industry.getCoordinate().getLongitude()));
+                    markerOptions.title(industry.getName());
+                    markerOptions.snippet(industry.getDescription());
+                    markerOptions.icon(industryMarkerIcon);
+
+                    /* create the marker and add to map */
+                    Marker marker = googleMap.addMarker(markerOptions);
+                    industryMarker.put(key, marker);
+                }
+            }
+        });
+    }
+
+    public void updateUserMarker(final String key, final User user) {
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(googleMap == null) {
+                    /* map not ready */
+                    return;
+                }
+
+                if(user == null) {
+                    System.err.println("Maps fragment ignored a null user");
+
+                    return;
+                }
+
+                if(userMarker.containsKey(key)) {
+                    Marker marker = userMarker.get(key);
+
+                    marker.setPosition(new LatLng(
+                            user.getCoordinate().getLatitude(),
+                            user.getCoordinate().getLongitude()));
+                    marker.setTitle(user.getName());
+                    marker.setSnippet(user.getDescription());
+                } else {
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(new LatLng(
+                            user.getCoordinate().getLatitude(),
+                            user.getCoordinate().getLongitude()));
+                    markerOptions.title(user.getName());
+                    markerOptions.snippet(user.getDescription());
+                    markerOptions.icon(userMarkerIcon);
+
+                    /* create the marker and add to map */
+                    Marker marker = googleMap.addMarker(markerOptions);
+                    userMarker.put(key, marker);
+                }
+            }
+        });
+    }
+
+    public void removeFarmMarker(final String key, final Farm farm) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(googleMap == null) {
+                    /* map not ready */
+                    return;
+                }
+
+                if(farm == null) {
+                    System.err.println("Maps fragment ignored a null farm");
+
+                    return;
+                }
+
+                if(farmMarker.containsKey(key)) {
+                    Marker marker = farmMarker.get(key);
+                    marker.remove();
+                } else {
+                    System.err.println("Maps fragment receveid a farm that don't exist (" + key + ")");
+                }
+            }
+        });
+    }
+
+    public void removeIndustryMarker(final String key, final Industry industry) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(googleMap == null) {
+                    /* map not ready */
+                    return;
+                }
+
+                if(industry == null) {
+                    System.err.println("Maps fragment ignored a null user");
+
+                    return;
+                }
+
+                if(industryMarker.containsKey(key)) {
+                    Marker marker = industryMarker.get(key);
+                    marker.remove();
+                } else {
+                    System.err.println("Maps fragment receveid a industry that don't exist (" + key + ")");
+                }
+            }
+        });
+    }
+
+    public void removeUserMarker(final String key, final User user) {
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(googleMap == null) {
+                    /* map not ready */
+                    return;
+                }
+
+                if(user == null) {
+                    System.err.println("Maps fragment ignored a null user");
+
+                    return;
+                }
+
+                if(userMarker.containsKey(key)) {
+                    Marker marker = userMarker.get(key);
+                    marker.remove();
+                } else {
+                    System.err.println("Maps fragment receveid a user that don't exist (" + key + ")");
+                }
+            }
+        });
+    }
+
+    public DatabaseRoot getDatabaseRoot() {
+        return databaseRoot;
+    }
+
+    public void setDatabaseRoot(DatabaseRoot databaseRoot) {
+        this.databaseRoot = databaseRoot;
+    }
+
+    public boolean isMarkerUpdate() {
+        return markerUpdate;
+    }
+
+    public void setMarkerUpdate(boolean markerUpdate) {
+        this.markerUpdate = markerUpdate;
     }
 }

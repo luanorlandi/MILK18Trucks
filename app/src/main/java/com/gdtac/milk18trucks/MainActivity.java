@@ -63,15 +63,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -97,9 +88,10 @@ public class MainActivity extends AppCompatActivity
 
         /* database root */
         databaseRoot = new DatabaseRoot();
+        mapsFragment.setDatabaseRoot(databaseRoot);
 
         /* marker handler */
-        markerHandler = new MarkerHandler(databaseRoot, mapsFragment);
+        markerHandler = new MarkerHandler(databaseRoot, mapsFragment, this);
         new Thread(markerHandler).start();
     }
 
@@ -107,6 +99,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         gpsTracker.stopGPS();
 
         myUser.setEnabled(false);

@@ -20,6 +20,10 @@ public class DatabaseRoot {
     private Map<String, Industry> industryMap;
     private Map<String, User> userMap;
 
+    private Map<String, Farm> garbageFarmMap;   /* removed farm will be added here */
+    private Map<String, Industry> garbageIndustryMap;   /* removed industry will be added here */
+    private Map<String, User> garbageUserMap;   /* removed user will be added here */
+
     private final DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
     private final DatabaseReference farmRef = rootRef.child("Farm");
     private final DatabaseReference industryRef = rootRef.child("Industry");
@@ -33,6 +37,10 @@ public class DatabaseRoot {
         farmMap = new HashMap<>();
         industryMap = new HashMap<>();
         userMap = new HashMap<>();
+
+        garbageFarmMap = new HashMap<>();
+        garbageIndustryMap = new HashMap<>();
+        garbageUserMap = new HashMap<>();
 
         startFarmListener();
         startIndustryListener();
@@ -62,6 +70,7 @@ public class DatabaseRoot {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                garbageFarmMap.put(dataSnapshot.getKey(), farmMap.get(dataSnapshot.getKey()));
                 farmMap.remove(dataSnapshot.getKey());
             }
 
@@ -102,6 +111,7 @@ public class DatabaseRoot {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                garbageIndustryMap.put(dataSnapshot.getKey(), industryMap.get(dataSnapshot.getKey()));
                 industryMap.remove(dataSnapshot.getKey());
             }
 
@@ -142,6 +152,7 @@ public class DatabaseRoot {
 
             @Override
             public void onChildRemoved(DataSnapshot dataSnapshot) {
+                garbageUserMap.put(dataSnapshot.getKey(), userMap.get(dataSnapshot.getKey()));
                 userMap.remove(dataSnapshot.getKey());
             }
 
@@ -181,6 +192,18 @@ public class DatabaseRoot {
 
     public Map<String, User> getUserMap() {
         return userMap;
+    }
+
+    public Map<String, Farm> getGarbageFarmMap() {
+        return garbageFarmMap;
+    }
+
+    public Map<String, Industry> getGarbageIndustryMap() {
+        return garbageIndustryMap;
+    }
+
+    public Map<String, User> getGarbageUserMap() {
+        return garbageUserMap;
     }
 
     public void showMap() {
