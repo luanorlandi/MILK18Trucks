@@ -163,6 +163,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.nav_send:
                 break;
             case R.id.nav_about:
+                Uri uri = Uri.parse("https://github.com/luanorlandi/MILK18Trucks#milk18trucks");
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(intent);
                 break;
             case R.id.nav_signout:
                 myUser.setEnabled(false);
