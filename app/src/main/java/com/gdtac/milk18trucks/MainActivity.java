@@ -162,6 +162,8 @@ public class MainActivity extends AppCompatActivity
                 break;
             case R.id.nav_send:
                 break;
+            case R.id.nav_about:
+                break;
             case R.id.nav_signout:
                 myUser.setEnabled(false);
                 mAuth.signOut();

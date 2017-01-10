@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">MILK18Trucks</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Senha</string>
+    <string name="action_sign_in">Entrar</string>
+    <string name="action_sign_up">Registrar</string>
+    <string name="action_sign_out">Sair</string>
+
+    <string name="wait_sign_in">Entrando...</string>
+    <string name="wait_sign_up">Registrando...</string>
+
+    <string name="error_sign_in">Falha ao tentar entrar</string>
+    <string name="error_sign_up">Falha ao tentar registrar</string>
+    <string name="error_email_required">Email é necessário</string>
+    <string name="error_password_required">Senha é necessária</string>
+
+    <!-- Strings related to GPS tracker -->
+    <string name="gps_disabled_title">GPS desabilitado</string>
+    <string name="gps_disabled_ask_settings">Você quer ir no menu de configurações?</string>
+    <string name="gps_disabled_positive_response">Configurações</string>
+    <string name="gps_disabled_negative_response">Cancelar</string>
+
+    <!-- Strings related to Main activity -->
+    <string name="navigation_drawer_open">Abrir menu de navegação</string>
+    <string name="navigation_drawer_close">Fechar menu de navegação</string>
+
+    <string name="navigation_drawer_import">Importar</string>
+    <string name="navigation_drawer_gallery">Galeria</string>
+    <string name="navigation_drawer_slideshow">Apresentação</string>
+    <string name="navigation_drawer_tools">Ferramentas</string>
+    <string name="navigation_drawer_communicate">Comunicação</string>
+    <string name="navigation_drawer_share">Compartilhar</string>
+    <string name="navigation_drawer_send">Enviar</string>
+    <string name="navigation_drawer_about">Sobre</string>
+    <string name="navigation_drawer_settings">Opções</string>
+
+    <string name="navigation_header_email">Seu email:</string>
+</resources>

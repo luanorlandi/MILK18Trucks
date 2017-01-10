@@ -78,7 +78,7 @@ public class SignActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void createAccount(String email, String password) {
-        progressDialog.setMessage("Registrando...");
+        progressDialog.setMessage(getResources().getString(R.string.wait_sign_up));
         progressDialog.show();
 
         mAuth.createUserWithEmailAndPassword(email, password)
@@ -93,7 +93,7 @@ public class SignActivity extends AppCompatActivity implements View.OnClickListe
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(SignActivity.this, "Falha ao registrar.",
+                            Toast.makeText(SignActivity.this, getResources().getString(R.string.error_sign_up),
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             callMainActivity();
@@ -105,7 +105,7 @@ public class SignActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void signIn(String email, String password) {
-        progressDialog.setMessage("Entrando...");
+        progressDialog.setMessage(getResources().getString(R.string.wait_sign_in));
         progressDialog.show();
 
         mAuth.signInWithEmailAndPassword(email, password)
@@ -121,7 +121,7 @@ public class SignActivity extends AppCompatActivity implements View.OnClickListe
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             Log.w(TAG, "signInWithEmail", task.getException());
-                            Toast.makeText(SignActivity.this, "Falha ao entrar.",
+                            Toast.makeText(SignActivity.this, getResources().getString(R.string.error_sign_in),
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             callMainActivity();
@@ -139,10 +139,12 @@ public class SignActivity extends AppCompatActivity implements View.OnClickListe
             String password = passwordText.getText().toString().trim();
 
             if(TextUtils.isEmpty(email)) {
-                Toast.makeText(this, "Insira um e-mail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,
+                        getResources().getString(R.string.error_email_required), Toast.LENGTH_SHORT).show();
                 return;
             } else if(TextUtils.isEmpty(password)) {
-                Toast.makeText(this, "Insira uma senha", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,
+                        getResources().getString(R.string.error_password_required), Toast.LENGTH_SHORT).show();
                 return;
             }
 
@@ -153,10 +155,12 @@ public class SignActivity extends AppCompatActivity implements View.OnClickListe
             String password = passwordText.getText().toString().trim();
 
             if(TextUtils.isEmpty(email)) {
-                Toast.makeText(this, "Insira um e-mail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,
+                        getResources().getString(R.string.error_email_required), Toast.LENGTH_SHORT).show();
                 return;
             } else if(TextUtils.isEmpty(password)) {
-                Toast.makeText(this, "Insira uma senha", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this,
+                        getResources().getString(R.string.error_password_required), Toast.LENGTH_SHORT).show();
                 return;
             }
 

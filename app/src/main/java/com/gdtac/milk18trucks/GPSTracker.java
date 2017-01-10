@@ -92,9 +92,9 @@ public class GPSTracker extends Service implements LocationListener {
 
             AlertDialog.Builder alertDialog = new AlertDialog.Builder(context);
 
-            alertDialog.setTitle("GPS disabled");
-            alertDialog.setMessage("Do you want to go to settings menu?");
-            alertDialog.setPositiveButton("Settings", new DialogInterface.OnClickListener() {
+            alertDialog.setTitle(getResources().getString(R.string.gps_disabled_title));
+            alertDialog.setMessage(getResources().getString(R.string.gps_disabled_ask_settings));
+            alertDialog.setPositiveButton(getResources().getString(R.string.gps_disabled_positive_response), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
@@ -104,7 +104,7 @@ public class GPSTracker extends Service implements LocationListener {
                 }
             });
 
-            alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            alertDialog.setNegativeButton(getResources().getString(R.string.gps_disabled_negative_response), new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
