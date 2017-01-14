@@ -31,7 +31,7 @@ The following image show the Firebase database and MILK18Trucks app:
 
 ![Screenshot](img/2.png)
 
-In [Releases](https://github.com/luanorlandi/MILK18Trucks/releases) tab there is a builded apk of MILK 18 Trucks app for Android (this is not submitted in Play Store, so it will require developer mode enabled to install it).
+In [Releases](https://github.com/luanorlandi/MILK18Trucks/releases) tab there is a builded apk of MILK18Trucks app for Android (this is not submitted in Play Store, so it will require developer mode enabled to install it).
 
 ## Credits
 
