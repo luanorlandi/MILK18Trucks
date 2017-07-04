@@ -91,14 +91,16 @@ public class MapsFragment extends SupportMapFragment implements OnMapReadyCallba
             this.googleMap = googleMap;
             this.googleMap.setOnMapClickListener(this);
             this.googleMap.getUiSettings().setZoomControlsEnabled(true);
-            //this.googleMap.setMyLocationEnabled(true);
+            this.googleMap.setMyLocationEnabled(true);
         } catch(SecurityException ex) {
             Log.e(TAG, "Error", ex);
         }
     }
     public void googleMapEnableLocation() {
         try {
-            this.googleMap.setMyLocationEnabled(true);
+            if(this.googleMap != null) {
+                this.googleMap.setMyLocationEnabled(true);
+            }
         } catch(SecurityException ex) {
             Log.e(TAG, "Error", ex);
         }
