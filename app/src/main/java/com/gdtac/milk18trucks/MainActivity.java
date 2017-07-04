@@ -1,6 +1,7 @@
 package com.gdtac.milk18trucks;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -19,6 +20,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -38,11 +40,13 @@ public class MainActivity extends AppCompatActivity
 
     private MapsFragment mapsFragment;
 
-    private GPSTracker gpsTracker;
+    private GPSTracker gpsTracker = null;
     private MyUser myUser = null;
 
     private DatabaseRoot databaseRoot;
     private MarkerHandler markerHandler;
+
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,11 +84,8 @@ public class MainActivity extends AppCompatActivity
         showFragment(mapsFragment, "MapsFragment");
 
         /* GPS tracker */
-        gpsTracker = new GPSTracker(this);
-
-        /* start thread to update user location */
-        myUser = new MyUser(rootRef.child("User"), user, gpsTracker);
-        new Thread(myUser).start();
+        //gpsTracker = new GPSTracker(this);
+        requestGPS();   /* API 23 or above */
 
         /* database root */
         databaseRoot = new DatabaseRoot();
@@ -208,5 +209,58 @@ public class MainActivity extends AppCompatActivity
         Uri photoUrl = user.getPhotoUrl();
 
         textViewEmail.setText(email);
+    }
+
+    private void requestGPS() {
+        if (this.checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            this.requestPermissions(new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
+                    MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+        } else {
+            startGPS();
+        }
+    }
+
+    /* call after request for GPS in accepted */
+    private void startGPS() {
+        gpsTracker = new GPSTracker(this);
+
+        /* start thread to update user location */
+        myUser = new MyUser(rootRef.child("User"), user, gpsTracker);
+        new Thread(myUser).start();
+
+        /* enable location UI */
+        if(mapsFragment != null) {
+            mapsFragment.googleMapEnableLocation();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(
+            int requestCode, String permissions[], int[] grantResults) {
+
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // contacts-related task you need to do.
+                    startGPS();
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+                    Toast.makeText(this, getResources().getString(
+                            R.string.gps_required), Toast.LENGTH_SHORT).show();
+                }
+                return;
+            }
+
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
     }
 }

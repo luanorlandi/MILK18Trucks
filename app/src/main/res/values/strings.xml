@@ -21,6 +21,7 @@
     <string name="gps_disabled_ask_settings">Do you want to go to settings menu?</string>
     <string name="gps_disabled_positive_response">Settings</string>
     <string name="gps_disabled_negative_response">Cancel</string>
+    <string name="gps_required">You need to enable GPS to work properly</string>
 
     <!-- Strings related to Main activity -->
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -37,16 +37,31 @@ public class MyUser implements Runnable {
     @Override
     public void run() {
         while(enabled) {
-            Location location = gpsTracker.getLocation();
+            Location location = null;
+
+            System.err.println("STEP 1 LOCATION");
+
+            if (gpsTracker != null) {
+                location = gpsTracker.getLocation();
+            }
+
+            System.err.println("STEP 2 LOCATION");
 
             if (location != null) {
+                System.err.println("STEP 3 LOCATION");
+                System.err.println("GOT COORD = " + user.getCoordinate());
                 user.getCoordinate().setLongitude(location.getLongitude());
                 user.getCoordinate().setLatitude(location.getLatitude());
 
                 ref.child(firebaseUser.getUid()).setValue(user);
-            }
+            } else
+                System.err.println("LOCATION IS NULL");
+
+
+            System.err.println("STEP 4 LOCATION");
 
             try {
+                System.err.println("STEP 5 LOCATION");
                 Thread.sleep(MIN_TIME_UPDATE);
             } catch (InterruptedException e) {
                 e.printStackTrace();

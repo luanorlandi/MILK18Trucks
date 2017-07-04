@@ -5,6 +5,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -12,6 +13,7 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 
 /**
  * Created by Orlandi on 13/11/2016.
@@ -53,13 +55,13 @@ public class GPSTracker extends Service implements LocationListener {
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
             isNerworkEnabled = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
 
-            if(!isGPSEnabled && !isNerworkEnabled) {
+            if (!isGPSEnabled && !isNerworkEnabled) {
                 showSettingsAlert();
             } else {
                 /* at least one provider is available */
                 canGetLocation = true;
 
-                if(isNerworkEnabled) {
+                if (isNerworkEnabled) {
                     locationManager.requestLocationUpdates(
                             LocationManager.NETWORK_PROVIDER,
                             MIN_TIME_UPDATE,
@@ -67,7 +69,7 @@ public class GPSTracker extends Service implements LocationListener {
                             this);
                 }
 
-                if(isGPSEnabled) {
+                if (isGPSEnabled) {
                     locationManager.requestLocationUpdates(
                             LocationManager.GPS_PROVIDER,
                             MIN_TIME_UPDATE,
@@ -76,12 +78,13 @@ public class GPSTracker extends Service implements LocationListener {
                 }
             }
         } catch (SecurityException e) {
+            System.err.println("Security exception catch");
             e.printStackTrace();
         }
     }
 
     public void stopGPS() {
-        if(locationManager != null) {
+        if (locationManager != null) {
             locationManager.removeUpdates(GPSTracker.this);
         }
     }

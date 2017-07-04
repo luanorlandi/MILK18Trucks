@@ -21,6 +21,7 @@
     <string name="gps_disabled_ask_settings">Você quer ir no menu de configurações?</string>
     <string name="gps_disabled_positive_response">Configurações</string>
     <string name="gps_disabled_negative_response">Cancelar</string>
+    <string name="gps_required">Você precisa ligar o GPS para funcionar corretamente</string>
 
     <!-- Strings related to Main activity -->
     <string name="navigation_drawer_open">Abrir menu de navegação</string>
